@@ -18,6 +18,7 @@ public class FunctionalInterfaceTest {
     void Consumer_테스트(){
         Consumer<String> consumer = (x) -> System.out.println("나는 " + x + " Consumer다 ");
         consumer.accept("킹왕짱");
+        System.out.println("test");
     }
 
     @Test
