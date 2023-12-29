@@ -4,15 +4,12 @@ import java.math.BigInteger;
 
 public class InterruptEx2 {
     public static void main(String[] args) {
-        // 아주 큰 숫자를 넣는다면, 계산이 굉장히 오래걸린다
-        // 결국, 계산이 끝날때까지 기다리거나 스레드를 인터럽트해서 앱을 종료해야 한다
-        Thread thread = new Thread(new LongComputationTask(new BigInteger("200000"), new BigInteger("10000000")));
+        Thread thread = new Thread(new LongComputationTask(new BigInteger("200"), new BigInteger("10000")));
+
+        // thread의 연산이 오래걸림에도 불구하고 데몬스레드로 실행했기때문에 main 스레드(비데몬)가 종료되면 thread도 종료된다.
+        thread.setDaemon(true);
 
         thread.start();
-
-        // 인터럽트를 발생시켜도 인터럽트를 처리하는 코드가 없다면 인터럽트 신호가 무시된다.
-        // 따라서, 코드내에서 시간이 오래걸리는 핫스팟을 찾아야 한다.
-        thread.interrupt();
     }
 
     private static class LongComputationTask implements Runnable {
@@ -32,10 +29,7 @@ public class InterruptEx2 {
         private BigInteger pow(BigInteger base, BigInteger power){
             BigInteger result = BigInteger.ONE;
             for(BigInteger i = BigInteger.ZERO; !i.equals(power); i = i.add(BigInteger.ONE)){
-                if(Thread.currentThread().isInterrupted()){
-                    System.out.println("인터럽트 발생!");
-                    return BigInteger.ZERO;
-                }
+                System.out.println(result);
                 result = result.multiply(base);
             }
 
