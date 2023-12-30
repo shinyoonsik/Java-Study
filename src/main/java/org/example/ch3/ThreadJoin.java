@@ -9,7 +9,9 @@ public class ThreadJoin {
     public static void main(String[] args) throws InterruptedException {
         // 모든 스레드가 실행을 종료했지만 1000000L을 계산하는 스레드는 오래걸려 종료되지 않는다! terminated되지 않은 스레드가 존재해 앱도 여전히 실행중이다
         // 이럴때, interrupt를 발생시키거나 스레드를 데몬으로 만들어서 엣지 케이스에대해 대처할 수 있다
-        List<Long> numbers = Arrays.asList(0L, 35L, 35L, 234L, 254L, 1000000L);
+        List<Long> numbers = Arrays.asList(0L, 35L, 35L, 234L, 254L, 10L);
+
+        long startTime = System.currentTimeMillis();
 
         List<FactorialThread> threads = new ArrayList<>();
         for (Long number : numbers) {
@@ -36,6 +38,10 @@ public class ThreadJoin {
                 System.out.println("The calculation for " + numbers.get(i) + " is still in progress");
             }
         }
+
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Latency: " + (endTime - startTime) + "ms");
     }
 
 
@@ -78,6 +84,4 @@ public class ThreadJoin {
             return this.result;
         }
     }
-
-
 }
