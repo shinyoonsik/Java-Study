@@ -17,13 +17,15 @@ public class ThreadJoin {
         }
 
         for (FactorialThread thread : threads) {
-            thread.setDaemon(true);
             thread.start();
         }
 
         for (FactorialThread thread : threads) {
             // 2초 기다리고 join하겠다 == thread의 연산이 길어져도 main스레드가 2초는 기다리겠다!
             thread.join(2000);
+            if(thread.isAlive()){
+                thread.interrupt();
+            }
         }
 
         for (int i = 0; i < numbers.size(); i++) {
@@ -60,7 +62,7 @@ public class ThreadJoin {
             BigInteger tempResult = BigInteger.ONE;
             for (long i = n; i > 0; i--) {
                 if(this.isInterrupted()){
-                    System.out.println("너무 오래걸려 강제 종료");
+                    System.out.println(this.getName() + "스레드가 너무 오래걸려서 강제 종료함");
                     return BigInteger.ZERO;
                 }
                 tempResult = tempResult.multiply(BigInteger.valueOf(i));
