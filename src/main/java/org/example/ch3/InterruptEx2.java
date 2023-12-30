@@ -24,6 +24,11 @@ public class InterruptEx2 {
         @Override
         public void run() {
             System.out.println(this.base + "^" + this.power + " = " + pow(this.base, this.power));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         private BigInteger pow(BigInteger base, BigInteger power){
