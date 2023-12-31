@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Q: 회색 색조의 모든 꽃을 보라색으로 합성할 것
@@ -17,7 +19,13 @@ public class MultiThreadForFlower {
         BufferedImage originalImage = ImageIO.read(new File(SOURCE_FILE));
         BufferedImage resultImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
 
-        recolorSingleThread(originalImage, resultImage);
+        long startTime = System.currentTimeMillis();
+//        recolorSingleThread(originalImage, resultImage);
+        recolorMultiThread(originalImage, resultImage, 3);
+        long endTime = System.currentTimeMillis();
+
+        long duration = endTime - startTime;
+        System.out.println(duration); // 성능 측정
 
         // 저장할 파일 객체 생성
         File outputFile = new File(DESTINATION_FILE);
@@ -31,6 +39,37 @@ public class MultiThreadForFlower {
 
     public static void recolorSingleThread(BufferedImage originalImage, BufferedImage resultImage) {
         recolorImage(originalImage, resultImage, 0, 0, originalImage.getWidth(), originalImage.getHeight());
+    }
+
+    public static void recolorMultiThread(BufferedImage originalImage, BufferedImage resultImage, int numberOfThread){
+        List<Thread> threads = new ArrayList<>();
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight() / numberOfThread;
+
+        for(int i=0; i<numberOfThread; i++){
+            final int threadMultiplier = i;
+
+            Thread thread = new Thread(() -> {
+                int leftCorner = 0;
+                int topCorner = height * threadMultiplier;
+
+                recolorImage(originalImage, resultImage, leftCorner, topCorner, width, height);
+            });
+
+            threads.add(thread);
+        }
+
+        for (Thread thread : threads) {
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+            }
+        }
+
     }
 
     public static void recolorImage(BufferedImage originalImage, BufferedImage resultImage, int leftCorner, int topCorner, int width, int height) {
