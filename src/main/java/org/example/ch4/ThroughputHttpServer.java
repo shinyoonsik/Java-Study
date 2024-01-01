@@ -1,21 +1,18 @@
 package org.example.ch4;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-
 public class ThroughputHttpServer {
     private static final String INPUT_FILE = "throughput/war_and_peace.txt";
-    private static final int NUMBER_OF_THREADS = 1;
+    private static final int NUMBER_OF_THREADS = 4;
 
     public static void main(String[] args) throws IOException {
         Path filePath;
