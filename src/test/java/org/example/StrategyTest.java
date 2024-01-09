@@ -8,6 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StrategyTest {
 
+    /**
+     * 전략 패턴
+     * Context: PurchaseService
+     * Strategy: PaymentMethod
+     * concreateStrategy: PayApple, PayCard...
+     */
     @Test
     void OCP를_지킨_설계_테스트(){
         PurchaseService service1 = new PurchaseService(new PayCard());
