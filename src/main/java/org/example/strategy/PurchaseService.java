@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.strategy;
 
 public class PurchaseService {
     private PaymentMethod paymentMethod;

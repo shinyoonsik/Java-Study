@@ -1,7 +1,7 @@
 package org.example;
 
 
-import org.example.service.*;
+import org.example.strategy.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
