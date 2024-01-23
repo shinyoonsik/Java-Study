@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResourcesTest {
 
-
     @Test
     @DisplayName("resources 싱글톤 테스트")
     void test() throws IOException {
