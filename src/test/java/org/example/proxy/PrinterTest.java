@@ -1,16 +1,29 @@
 package org.example.proxy;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class PrinterTest {
 
+    @Mock
+    private Aspect logging;
+
+    @Mock
+    private Aspect userAuth;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void printerTest(){
-        Aspect logging = mock(Aspect.class); // 인터페이스를 통해서 Mock을 만들 수 없다.
-        Aspect userAuth = mock(UserAuth.class);
         Printable printer = new PrinterProxy("samsung", logging, userAuth);
         String message = "나는 삼송맨이다";
 
