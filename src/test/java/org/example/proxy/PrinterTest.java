@@ -8,7 +8,7 @@ class PrinterTest {
 
     @Test
     void printerTest(){
-        Printer printer = new Printer("samsung");
+        Printable printer = new PrinterProxy("samsung"); // (LSP 준수)상위 클래스의 인스턴스는 하위 클래스의 인스턴스로 대체될 수 있어야 한다.
         String message = "나는 삼송맨이다";
         String printedMessage = printer.print(message);
 
