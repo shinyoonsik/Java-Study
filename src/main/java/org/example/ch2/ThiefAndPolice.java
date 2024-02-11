@@ -14,20 +14,16 @@ public class ThiefAndPolice {
         Vault vault = new Vault(vaultPassword);
 
         List<Thread> threads = new ArrayList<>();
-        AscendingHackerThread ascendingHackerThread = new AscendingHackerThread(vault);
-        ascendingHackerThread.run();
         threads.add(new AscendingHackerThread(vault));
         threads.add(new DescendingHackerThread(vault));
         threads.add(new PoliceThread());
 
-        for (Thread thread : threads) {
-            thread.start();
-        }
+        threads.forEach(Thread::start);
     }
 
     // 금고 클래스
     private static class Vault {
-        private int password;
+        private final int password;
 
         public Vault(int password) {
             this.password = password;
@@ -37,7 +33,7 @@ public class ThiefAndPolice {
             try {
                 // 도둑의 속도 너무 빠름.
                 // 결과 확인을 위해 의도적으로 속도를 늦춤
-                Thread.sleep(50);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -56,7 +52,7 @@ public class ThiefAndPolice {
         }
 
         @Override
-        public synchronized void start() {
+        public void start() {
             System.out.println("Starting thread " + this.getName());
             super.start();
         }
