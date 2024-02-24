@@ -7,11 +7,14 @@ public class MyMain {
         CustomerService customerService = new CustomerService();
         init(customerService);
 
-        List<Customer> customers = customerService.searchCustomerByGender(Gender.Female);
-
-        for (Customer customer : customers) {
+        List<Customer> result = customerService.searchCustomerBy(SearchCondition.Gender, "Female");
+        for (Customer customer : result) {
             System.out.println("customer = " + customer);
         }
+
+        System.out.println(Gender.Male + " " + Gender.Male.getClass().getName());
+        System.out.println(Gender.Male.name() + " " + Gender.Male.name().getClass().getName());
+        System.out.println(Gender.Male.equals(Gender.Male.name()));
     }
 
     private static void init(CustomerService customerService) {
