@@ -45,6 +45,7 @@ public class CustomerService {
     }
 
     // 하나의 메소드로 리팩토링
+    // 문제: 조건이 추가될 때마다 조건문과 SearchCondition을 계속 수정해주어야 한다
     public List<Customer> searchCustomerBy(SearchCondition condition, String value) {
         if (condition == null) throw new RuntimeException("condition이 null이다");
         if (value == null) throw new RuntimeException("value가 null이다");
@@ -59,6 +60,21 @@ public class CustomerService {
                 if (value.equals(customer.getGender().name())) {
                     foundCustomers.add(customer);
                 }
+            }
+        }
+
+        return foundCustomers;
+    }
+
+    // 인터페이스에 의존하게 리팩토링
+    // 조건이 추가되어도 기존 코드를 수정하지 않아도 된다. 새로운 조건에 맞는 filter만 넣어주면 된다
+    public List<Customer> searchCustomerBy(SearchFilter filter) {
+        if (filter == null) throw new RuntimeException("filter가 null이다");
+
+        List<Customer> foundCustomers = new ArrayList<>();
+        for (Customer customer : this.customers) {
+            if(filter.isMatched(customer)){
+                foundCustomers.add(customer);
             }
         }
 
