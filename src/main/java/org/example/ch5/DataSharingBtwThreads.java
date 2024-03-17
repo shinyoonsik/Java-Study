@@ -58,15 +58,21 @@ public class DataSharingBtwThreads {
     private static class PointCounter {
         private int point = 0;
 
+        Object lock = new Object();
+
         public synchronized void increment() {
-            point++;
+            synchronized (this.lock) {
+                point++;
+            }
         }
 
         public synchronized void decrement() {
-            point--;
+            synchronized (this.lock) {
+                point--;
+            }
         }
 
-        public int getPoints() {
+        public synchronized int getPoints() {
             return point;
         }
     }
