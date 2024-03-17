@@ -1,5 +1,9 @@
 package org.example.ch5;
 
+/**
+ * 상황: 서로 다른 스레드에서 각각 point변수의 상태를 10000번 더하고 10000번 뺀 상황이다
+ * 결과: 원하는 결과는 0이 나와야 한다
+ */
 public class DataSharingBtwThreads {
     public static void main(String[] args) throws InterruptedException {
 
@@ -8,10 +12,10 @@ public class DataSharingBtwThreads {
         DecrementingThread decrementingThread = new DecrementingThread(pointCounter);
 
         incrementingThread.start();
-//        incrementingThread.join();
-
         decrementingThread.start();
-//        decrementingThread.join();
+
+        incrementingThread.join();
+        decrementingThread.join();
 
         System.out.println("현재 Point: " + pointCounter.getPoints());
     }
@@ -54,11 +58,11 @@ public class DataSharingBtwThreads {
     private static class PointCounter {
         private int point = 0;
 
-        public void increment() {
+        public synchronized void increment() {
             point++;
         }
 
-        public void decrement() {
+        public synchronized void decrement() {
             point--;
         }
 
