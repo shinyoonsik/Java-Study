@@ -72,7 +72,7 @@ public class DataSharingBtwThreads {
             }
         }
 
-        public synchronized int getPoints() {
+        public int getPoints() {
             return point;
         }
     }
