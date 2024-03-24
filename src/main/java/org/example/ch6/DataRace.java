@@ -1,5 +1,8 @@
 package org.example.ch6;
 
+/**
+ * Data Race발생 코드
+ */
 public class DataRace {
     public static void main(String[] args) {
         SharedClass sharedClass = new SharedClass();
