@@ -13,7 +13,6 @@ public class PerformanceMetric {
         businessLogic1.start();
         businessLogic2.start();
         metricsPrinter.start();
-
     }
 
     public static class MetricsPrinter extends Thread {
