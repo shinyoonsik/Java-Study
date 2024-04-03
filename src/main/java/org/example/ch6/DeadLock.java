@@ -18,9 +18,9 @@ public class DeadLock {
             // A -> Seoul에서 Busan
             // B -> Busan에서 Seoul
             if(type.equals("A"))
-                intersection.goFromSeoulToBusan();
+                intersection.goFromEastToWest();
             else if(type.equals("B"))
-                intersection.goFromBusanToSeoul();
+                intersection.goFromNorthToSouth();
             else
                 throw new RuntimeException("일치하는 type이 없습니다.");
         }
@@ -30,35 +30,35 @@ public class DeadLock {
         private Object roadA = new Object();
         private Object roadB = new Object();
 
-        public void goFromSeoulToBusan(){
+        public void goFromEastToWest(){
             while (true){
                 synchronized (roadA){
-                    System.out.println("roadA monitorLock 획득! " + "// current-Thread: " + Thread.currentThread().getName());
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    System.out.println("roadA monitorLock 획득! " + "| current-Thread: " + Thread.currentThread().getName());
 
                     synchronized (roadB){
-                        System.out.println("roadB monitorLock 획득! " + "// current-Thread: " + Thread.currentThread().getName());
+                        System.out.println("roadB monitorLock 획득! " + "| current-Thread: " + Thread.currentThread().getName());
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
         }
 
-        public void goFromBusanToSeoul(){
+        public void goFromNorthToSouth(){
             while (true){
                 synchronized (roadB){
-                    System.out.println("roadB monitorLock 획득!" + "// current-Thread: " + Thread.currentThread().getName());
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    System.out.println("roadB monitorLock 획득! " + "| current-Thread: " + Thread.currentThread().getName());
 
                     synchronized (roadA){
-                        System.out.println("roadA monitorLock 획득!" + "// current-Thread: " + Thread.currentThread().getName());
+                        System.out.println("roadA monitorLock 획득! " + "| current-Thread: " + Thread.currentThread().getName());
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
