@@ -1,29 +1,23 @@
 package org.example.LockFree;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-public class AtomicIntegerEx {
-
-    /**
-     * 싱글 스레드 환경이라면 굳이 AtomicInteger를 사용할 필요 없다. 오히려 원자적 연산을 가능하게 하는 내부 로직 때문에 Integer타입의 연산보다 성능이 떨어질 수 있다.
-     */
+public class LockEx {
     static class SharedResource {
-        private final AtomicInteger count;
+        int count = 0;
 
-        public SharedResource(AtomicInteger count) {
-            this.count = new AtomicInteger(count.get());
+        public SharedResource(int count) {
+            this.count = count;
         }
 
-        public void up() {
-            this.count.incrementAndGet();
+        public synchronized void up() {
+            this.count++;
         }
 
-        public void down() {
-            this.count.decrementAndGet();
+        public synchronized void down() {
+            this.count--;
         }
 
         public int getCount() {
-            return this.count.get();
+            return this.count;
         }
     }
 
@@ -63,20 +57,16 @@ public class AtomicIntegerEx {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        SharedResource sharedResource = new SharedResource(new AtomicInteger(0));
+        SharedResource sharedResource = new SharedResource(0);
         UpCountThread upCountThread = new UpCountThread("Up Thread", sharedResource);
-        UpCountThread upCountThread2 = new UpCountThread("Up Thread2", sharedResource);
         DownCountThread downCountThread = new DownCountThread("Down Thread", sharedResource);
 
         upCountThread.start();
-        upCountThread2.start();
         downCountThread.start();
 
         upCountThread.join();
-        upCountThread2.join();
         downCountThread.join();
 
         System.out.println("count값: " + sharedResource.getCount());
     }
-
 }
